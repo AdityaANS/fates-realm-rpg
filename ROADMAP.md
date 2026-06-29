@@ -2,9 +2,16 @@
 
 ## 🔴 Break First
 
-**1. No persistence — game state is in-memory only**
-`GAME_STATE` is a plain JS object. Refresh the page, everything is gone. No save system, no user accounts.
-Fix: PostgreSQL (or even SQLite) + session tokens. This is the single biggest blocker to being a real app.
+**1. No auth, no persistence — game state is in-memory only**
+`GAME_STATE` is a plain JS object. There is zero authentication — no login, no user accounts, no Google sign-in. Refresh the page and everything is gone. Anyone hitting the URL shares the same blank slate.
+
+Fix (in order):
+- **Google OAuth** via `passport-google-oauth20` — players log in with their Google account, no password to manage
+- **Session middleware** (`express-session` + a DB store) — ties the logged-in user to their save data
+- **PostgreSQL** (or SQLite for quick start) — persist `GAME_STATE` per user, keyed by Google user ID
+- Protect `/api/story` and all game endpoints behind an auth middleware check
+
+Why Google specifically: zero friction for players (one click), no email verification flow to build, and `passport-google-oauth20` is well-documented with a clear Vercel deployment path. Needs a Google Cloud OAuth 2.0 client ID — free to create.
 
 **2. Regex combat detection is unreliable**
 `combat-detector.js` fires combat when keywords like `"attack"`, `"fight"`, or `"charges"` appear — even in past-tense narration or NPC dialogue. A peaceful scene where a guard "attacks a thief" will lock the player in combat.
@@ -45,7 +52,7 @@ Fix: Move all mutable state server-side behind a session ID (Redis or DB).
 | Streaming responses | Most visible UX improvement, 2 hrs work |
 | `.env` validation on startup | Crash fast with a clear message instead of a mysterious 500 |
 | GitHub Actions CI | Auto-deploy to Vercel on push — standard practice |
-| User auth (JWT) | Unlocks persistence and makes it a full-stack app |
+| Google OAuth login | One-click sign-in, unlocks per-user save states |
 | OpenAI cost cap | Set a hard limit in billing before sharing publicly |
 
 ---
@@ -132,7 +139,7 @@ Currently enemies are triggered by regex on any combat-adjacent word. Needs a pr
 3. Enemy system rewrite using CSV data (biome-aware, scaled, bosses)
 4. Defeat consequences (death screen, penalties, injury system)
 5. Item/shop expansion (weapon types, loot grades, location variety)
-6. Database + auth (makes it a real product)
+6. Google OAuth + database (makes it a real product with per-user saves)
 7. Conversation summarisation (makes long sessions viable)
 8. Quest system (the CSV data is already there)
 9. Rate limiting + input validation (production safety)
