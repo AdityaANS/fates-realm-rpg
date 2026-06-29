@@ -1,0 +1,43 @@
+/**
+ * Story Mode Styles
+ */
+
+#story-mode {
+  background-color: var(--color-panel-bg);
+}
+
+.story-message {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  animation: slideUp var(--transition-normal);
+}
+
+.user-message {
+  background-color: rgba(212, 175, 55, 0.1);
+  border-left: 4px solid var(--color-gold);
+  margin-left: 2rem;
+}
+
+.ai-message {
+  background-color: rgba(100, 100, 120, 0.1);
+  border-left: 4px solid var(--color-parchment-dark);
+}
+
+.system-message {
+  background-color: rgba(139, 0, 0, 0.1);
+  border-left: 4px solid var(--color-crimson);
+  font-style: italic;
+  text-align: center;
+}
+
+.message-content {
+  color: var(--color-parchment);
+  line-height: 1.8;
+}
+
+#story-input {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+}

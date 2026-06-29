@@ -1,0 +1,19 @@
+{
+  "name": "fates-realm-integrated-rpg",
+  "version": "1.0.0",
+  "description": "Integrated RPG combining map generation, AI narration, arena combat, dice rolling, and shop systems",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["rpg", "game", "ai", "dungeon", "combat"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2",
+    "openai": "^4.20.1",
+    "dotenv": "^16.3.1"
+  }
+}

@@ -1,0 +1,72 @@
+/**
+ * Combat Mode Styles
+ */
+
+#combat-mode {
+  background: linear-gradient(135deg, #1a0a0a 0%, #0a0a14 100%);
+}
+
+.enemy-card {
+  background-color: var(--color-panel-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  min-width: 200px;
+  transition: all var(--transition-fast);
+}
+
+.enemy-card:hover {
+  border-color: var(--color-crimson);
+  transform: translateY(-2px);
+}
+
+.enemy-card.defeated {
+  opacity: 0.5;
+  filter: grayscale(1);
+}
+
+.enemy-name {
+  font-family: var(--font-title);
+  font-size: 1.2rem;
+  color: var(--color-crimson-bright);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.enemy-hp-bar {
+  background-color: var(--color-dark-ink);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  height: 24px;
+  position: relative;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.enemy-hp-fill {
+  background: linear-gradient(90deg, var(--color-crimson) 0%, var(--color-crimson-bright) 100%);
+  height: 100%;
+  transition: width var(--transition-normal);
+}
+
+.enemy-hp-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-parchment);
+  text-shadow: 1px 1px 2px var(--color-shadow);
+}
+
+.combat-log-entry {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-parchment);
+  font-size: 0.95rem;
+}
+
+.combat-log-entry:last-child {
+  border-bottom: none;
+}

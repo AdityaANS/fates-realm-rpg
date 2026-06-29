@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fate's Realm - Integrated RPG</title>
+  <link rel="stylesheet" href="assets/styles/theme.css">
+  <link rel="stylesheet" href="assets/styles/story-mode.css">
+  <link rel="stylesheet" href="assets/styles/combat-mode.css">
+  <link rel="stylesheet" href="assets/styles/shop-mode.css">
+  <link rel="stylesheet" href="assets/styles/map-mode.css">
+</head>
+<body>
+  <div id="game-container">
+    <!-- Top Bar -->
+    <div id="top-bar">
+      <h1 id="game-title">Fate's Realm</h1>
+
+      <div id="stats-display">
+        <div class="stat-bar-container">
+          <div class="stat-label">HP</div>
+          <div class="stat-bar-wrapper">
+            <div id="hp-bar" class="stat-bar"></div>
+            <span id="hp-text" class="stat-text">100/100</span>
+          </div>
+        </div>
+
+        <div class="stat-bar-container">
+          <div class="stat-label">MP</div>
+          <div class="stat-bar-wrapper">
+            <div id="mp-bar" class="stat-bar"></div>
+            <span id="mp-text" class="stat-text">50/50</span>
+          </div>
+        </div>
+
+        <div class="stat-simple">
+          <div class="stat-label">Level</div>
+          <div id="level-text" class="stat-value">1</div>
+        </div>
+
+        <div class="stat-simple">
+          <div class="stat-label">Gold</div>
+          <div id="gold-text" class="stat-value">100</div>
+        </div>
+
+        <button id="map-btn" class="btn btn-secondary">Map</button>
+        <button id="emporium-btn" class="btn btn-secondary">Fate's Emporium</button>
+        <button id="save-btn" class="btn btn-secondary">Save</button>
+        <button id="new-character-btn" class="btn btn-secondary">Create New Character</button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+      <!-- Sidebar -->
+      <div id="sidebar">
+        <div class="sidebar-section">
+          <div id="character-stats">
+            <h3>Character</h3>
+            <p>No character yet</p>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3>Inventory</h3>
+          <div id="inventory-list">
+            <p class="empty-message">No items</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Area (Mode Panels) -->
+      <div id="game-area">
+        <!-- Intro Screen -->
+        <div id="intro-screen" class="mode-panel active">
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 2rem;">
+            <h1 style="font-size: 3rem; text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);">Fate's Realm</h1>
+            <p style="font-size: 1.3rem; color: var(--color-parchment-dark); max-width: 600px; text-align: center;">
+              An epic fantasy adventure where your choices shape the story. Explore a procedurally generated world, battle fearsome foes, and forge your legend.
+            </p>
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+              <button class="btn btn-primary" onclick="startNewGame()" style="font-size: 1.2rem; padding: 1rem 2rem;">New Game</button>
+              <button id="continue-btn" class="btn btn-secondary" onclick="continueGame()" style="font-size: 1.2rem; padding: 1rem 2rem; display: none;">Continue</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Login Screen -->
+        <div id="login-screen" class="mode-panel">
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 2rem;">
+            <h2>Adventurer Login</h2>
+            <p style="margin-top: 0.5rem; color: var(--color-parchment-dark);">Enter your credentials to begin.</p>
+
+            <div style="margin-top: 2rem; width: 100%; max-width: 420px; background: var(--color-panel-bg); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.5rem;">
+              <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--color-gold);">User ID</label>
+                <input type="text" id="login-user-input" placeholder="admin" style="width: 100%;">
+              </div>
+
+              <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--color-gold);">Password</label>
+                <input type="password" id="login-pass-input" placeholder="admin123" style="width: 100%;">
+              </div>
+
+              <button id="login-btn" class="btn btn-primary" style="width: 100%; padding: 0.9rem;">Login</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Character Creation Screen -->
+        <div id="character-creation-screen" class="mode-panel">
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 2rem;">
+            <h2>Character Builder</h2>
+
+            <div style="margin-top: 2rem; width: 100%; max-width: 500px;">
+              <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--color-gold);">Character Name</label>
+                <input type="text" id="char-name-input" placeholder="Enter your name" style="width: 100%; padding: 0.75rem; font-size: 1.1rem;">
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--color-gold);">Class</label>
+                <select id="char-class-select" style="width: 100%; padding: 0.75rem; font-size: 1.1rem;">
+                  <option value="">Select a class...</option>
+                </select>
+              </div>
+
+              <div style="margin-bottom: 1.25rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--color-gold);">Elden Ring Style Base Stats</label>
+                <p style="margin-bottom: 0.35rem; color: var(--color-parchment-dark); font-size: 0.95rem;">
+                  Base for each stat is 10. You can drop to 0. Every 5 points removed gives 1 bonus point.
+                </p>
+                <p style="margin-bottom: 0.75rem; color: var(--color-parchment-dark); font-size: 0.95rem;">
+                  Max creation stat is <span id="builder-max-stat">20</span>. Remaining bonus points:
+                  <strong id="creation-points-left" style="color: var(--color-gold);">0</strong>
+                </p>
+
+                <div style="display: grid; grid-template-columns: 1fr 90px; gap: 0.5rem; align-items: center;">
+                  <span>HP (Vigor)</span><input type="number" id="stat-vigor-input" min="0" max="20" value="10">
+                  <span>Mind</span><input type="number" id="stat-mind-input" min="0" max="20" value="10">
+                  <span>Endurance</span><input type="number" id="stat-endurance-input" min="0" max="20" value="10">
+                  <span>Strength</span><input type="number" id="stat-strength-input" min="0" max="20" value="10">
+                  <span>Dexterity</span><input type="number" id="stat-dexterity-input" min="0" max="20" value="10">
+                  <span>Intelligence</span><input type="number" id="stat-intelligence-input" min="0" max="20" value="10">
+                  <span>Faith</span><input type="number" id="stat-faith-input" min="0" max="20" value="10">
+                  <span>Arcane</span><input type="number" id="stat-arcane-input" min="0" max="20" value="10">
+                </div>
+              </div>
+
+              <button class="btn btn-primary" onclick="completeCharacterCreation()" style="width: 100%; padding: 1rem; font-size: 1.2rem;">Save Character</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Starting Screen -->
+        <div id="starter-screen" class="mode-panel">
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 1.5rem; padding: 2rem;">
+            <h2>Prologue</h2>
+            <p style="max-width: 760px; text-align: center; font-size: 1.2rem; color: var(--color-parchment-dark);">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
+            <button class="btn btn-primary" onclick="enterGameWorld()" style="padding: 1rem 2rem; font-size: 1.1rem;">Enter The Game</button>
+          </div>
+        </div>
+
+        <!-- Story Mode -->
+        <div id="story-mode" class="mode-panel">
+          <div style="display: flex; flex-direction: column; height: 100%;">
+            <div id="story-log" style="flex: 1; overflow-y: auto; padding: 1.5rem; background-color: var(--color-panel-bg);">
+              <!-- Story messages appear here -->
+            </div>
+
+            <div style="padding: 1rem; background-color: var(--color-dark-ink); border-top: 2px solid var(--color-border);">
+              <div style="display: flex; gap: 1rem;">
+                <textarea id="story-input" placeholder="What do you do?" rows="2" style="flex: 1; resize: none;"></textarea>
+                <button id="story-send-btn" class="btn btn-primary" style="width: 100px;">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Combat Mode -->
+        <div id="combat-mode" class="mode-panel">
+          <div style="display: flex; flex-direction: column; height: 100%; padding: 1.5rem; gap: 1.5rem;">
+            <h2 style="text-align: center; color: var(--color-crimson-bright);">Combat!</h2>
+
+            <div id="enemy-list" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+              <!-- Enemy cards appear here -->
+            </div>
+
+            <div id="combat-actions" style="display: flex; gap: 1rem; justify-content: center; margin-top: auto;">
+              <button class="btn btn-danger" onclick="playerDefend()">Defend</button>
+            </div>
+
+            <div id="combat-log" style="background-color: var(--color-panel-bg); padding: 1rem; max-height: 200px; overflow-y: auto; border-radius: var(--radius-md);">
+              <!-- Combat log messages -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Shop Mode -->
+        <div id="shop-mode" class="mode-panel">
+          <div style="display: flex; flex-direction: column; height: 100%; padding: 1.5rem;">
+            <h2 style="text-align: center;">Merchant's Emporium</h2>
+
+            <div style="display: flex; gap: 1.5rem; flex: 1; margin-top: 1.5rem;">
+              <div id="shop-inventory" style="flex: 2; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem;">
+                <!-- Shop items appear here -->
+              </div>
+
+              <div id="shop-cart" style="flex: 1; background-color: var(--color-panel-bg); padding: 1rem; border-radius: var(--radius-md);">
+                <h3>Cart</h3>
+                <!-- Cart items appear here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map Mode -->
+        <div id="map-mode" class="mode-panel">
+          <div style="display: flex; flex-direction: column; height: 100%;">
+            <div style="padding: 1rem; background-color: var(--color-panel-bg); border-bottom: 2px solid var(--color-border); display: flex; justify-content: space-between; align-items: center;">
+              <h2>World Map</h2>
+              <button class="btn btn-secondary" onclick="setUIMode('story')">Back to Story</button>
+            </div>
+
+            <canvas id="map-canvas" style="flex: 1; width: 100%; height: 100%; background-color: var(--color-dark-ink);"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div id="loading-indicator">Loading...</div>
+
+  <!-- Core Scripts -->
+  <script src="core/game-state.js"></script>
+  <script src="core/state-manager.js"></script>
+  <script src="core/ui-manager.js"></script>
+
+  <!-- Map Scripts -->
+  <script src="/data/quest-v2-map-data.js"></script>
+  <script src="map/generator.js"></script>
+  <script src="map/renderer.js"></script>
+
+  <!-- Story Scripts -->
+  <script src="story/prompt-builder.js"></script>
+  <script src="story/ai-client.js"></script>
+  <script src="story/response-processor.js"></script>
+
+  <!-- Combat Scripts -->
+  <script src="combat/combat-detector.js"></script>
+  <script src="combat/arena-combat.js"></script>
+  <script src="combat/combat-ui.js"></script>
+
+  <!-- Dice Scripts -->
+  <script src="dice/skill-detector.js"></script>
+  <script src="dice/skill-roller.js"></script>
+  <script src="dice/dice-ui.js"></script>
+
+  <!-- Shop Scripts -->
+  <script src="shop/shop-detector.js"></script>
+  <script src="shop/shop-generator.js"></script>
+  <script src="shop/emporium.js"></script>
+
+  <!-- Initialization -->
+  <script src="core/init.js"></script>
+</body>
+</html>
